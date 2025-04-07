@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 const slides = [
   {
     id: 1,
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "/slider/img-1.webp",
     title: "Timeless Fashion,",
     subtitle: "Conscious Choices.",
     description:
@@ -15,7 +15,7 @@ const slides = [
   },
   {
     id: 2,
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "/slider/img-2.jpeg",
     title: "Modern Elegance,",
     subtitle: "Sustainable Style.",
     description:
@@ -23,48 +23,48 @@ const slides = [
   },
   {
     id: 3,
-    image: "/placeholder.svg?height=600&width=1200",
+    image: "/slider/img-3.webp",
     title: "Effortless Beauty,",
     subtitle: "Ethical Essence.",
     description:
       "Discover pieces that blend contemporary design with responsible production for a wardrobe you can feel good about.",
   },
-];
+]
 
 export default function FashionSlider() {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
+  }
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
+  }
 
   const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
+    setCurrentSlide(index)
+  }
 
   // Pause auto-play on hover
-  const handleMouseEnter = () => setIsAutoPlaying(false);
-  const handleMouseLeave = () => setIsAutoPlaying(true);
+  const handleMouseEnter = () => setIsAutoPlaying(false)
+  const handleMouseLeave = () => setIsAutoPlaying(true)
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying) return
 
     const interval = setInterval(() => {
-      nextSlide();
-    }, 5000);
+      nextSlide()
+    }, 5000)
 
-    return () => clearInterval(interval);
-  }, [currentSlide, isAutoPlaying]);
+    return () => clearInterval(interval)
+  }, [currentSlide, isAutoPlaying])
 
   return (
     <div
-      className="relative w-full h-[600px] overflow-hidden"
+      className="relative w-full max-w-[1400px] h-[600px] overflow-hidden mx-auto mt-[60px]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -91,15 +91,11 @@ export default function FashionSlider() {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              <h2 className="text-4xl md:text-5xl font-light mb-1">
-                {slides[currentSlide].title}
-              </h2>
+              <h2 className="text-4xl md:text-5xl font-light mb-1">{slides[currentSlide].title}</h2>
               <h3 className="text-3xl md:text-4xl font-light italic text-gray-200 mb-4">
                 {slides[currentSlide].subtitle}
               </h3>
-              <p className="max-w-md text-sm md:text-base text-gray-200 mb-8">
-                {slides[currentSlide].description}
-              </p>
+              <p className="max-w-md text-sm md:text-base text-gray-200 mb-8">{slides[currentSlide].description}</p>
 
               <motion.button
                 className="bg-white text-black px-6 py-2 rounded-full w-fit text-sm font-medium"
@@ -130,10 +126,7 @@ export default function FashionSlider() {
           <motion.button
             onClick={prevSlide}
             className="bg-white/20 backdrop-blur-sm rounded-full p-1 mr-1"
-            whileHover={{
-              scale: 1.1,
-              backgroundColor: "rgba(255, 255, 255, 0.3)",
-            }}
+            whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 255, 255, 0.3)" }}
             whileTap={{ scale: 0.9 }}
             aria-label="Previous slide"
           >
@@ -142,10 +135,7 @@ export default function FashionSlider() {
           <motion.button
             onClick={nextSlide}
             className="bg-white/20 backdrop-blur-sm rounded-full p-1"
-            whileHover={{
-              scale: 1.1,
-              backgroundColor: "rgba(255, 255, 255, 0.3)",
-            }}
+            whileHover={{ scale: 1.1, backgroundColor: "rgba(255, 255, 255, 0.3)" }}
             whileTap={{ scale: 0.9 }}
             aria-label="Next slide"
           >
@@ -154,5 +144,6 @@ export default function FashionSlider() {
         </div>
       </div>
     </div>
-  );
+  )
 }
+
