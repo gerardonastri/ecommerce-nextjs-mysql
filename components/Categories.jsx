@@ -18,7 +18,7 @@ const Categories = () => {
     ]
 
   return (
-    <section className="md:wrapper max-w-[90%] mx-auto flex flex-col md:flex-row gap-10 !mt-[100px]">
+    <section className="wrapper mx-auto flex flex-col md:flex-row gap-10 !mt-[100px]">
         {items.map((item, i) => (
             <div className='md:flex-1 w-full h-[450px] relative rounded-md'>
                 <Image src={item.img} alt='category' fill className='object-cover rounded-md' />
