@@ -52,11 +52,11 @@ const Navbar = () => {
   }
 
   const navLinks = [
-    { href: "/", label: "Men" },
-    { href: "/", label: "Women" },
-    { href: "/", label: "Kids" },
-    { href: "/", label: "Sale" },
-    { href: "/", label: "Collections" },
+    { href: "/cat/men", label: "Men" },
+    { href: "/cat/women", label: "Women" },
+    { href: "/cat/kids", label: "Kids" },
+    { href: "/sale", label: "Sale" },
+    { href: "/collections", label: "Collections" },
   ]
 
   const iconLinks = [
