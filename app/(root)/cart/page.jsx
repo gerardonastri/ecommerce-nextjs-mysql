@@ -1,10 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+
+import { useStore } from "@/utils/zustand/useStore";
 
 export default function CartPage() {
+  const cart = useStore((state) => state.cart);
+  const removeFromCart = useStore((state) => state.removeFromCart);
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -33,28 +37,34 @@ export default function CartPage() {
       quantity: 2,
       image: "/products/img-7.avif",
     },
-  ])
+  ]);
 
   const updateQuantity = (id, change) => {
     setCartItems((prevItems) =>
-      prevItems.map((item) => (item.id === id ? { ...item, quantity: Math.max(1, item.quantity + change) } : item)),
-    )
-  }
+      prevItems.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + change) }
+          : item
+      )
+    );
+  };
 
   // Calculate totals
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)
-  const shipping = "Free"
-  const postage = 24.0
-  const total = subtotal + postage
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const shipping = "Free";
+  const postage = 24.0;
+  const total = subtotal + postage;
 
   // Format price with euro symbol
   const formatPrice = (price) => {
-    return `${price.toFixed(2).replace(".", ",")}€`
-  }
+    return `${price.toFixed(2).replace(".", ",")}€`;
+  };
 
   return (
     <div className="min-h-screen bg-white">
-
       <main className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-20 py-12">
         <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-12 text-center transform font-playfair">
           SHOPPING CART
@@ -67,7 +77,9 @@ export default function CartPage() {
               <div key={item.id} className="border-b border-gray-200 pb-8">
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="md:w-2/3">
-                    <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-2">{item.name}</h2>
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-2">
+                      {item.name}
+                    </h2>
                     <p className="text-xl mb-4">{formatPrice(item.price)}</p>
 
                     <div className="flex gap-6 mb-4">
@@ -117,7 +129,9 @@ export default function CartPage() {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="border border-gray-300 p-6">
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-6 text-center">ORDER SUMMARY</h2>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-6 text-center">
+                ORDER SUMMARY
+              </h2>
 
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
@@ -149,5 +163,5 @@ export default function CartPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }
