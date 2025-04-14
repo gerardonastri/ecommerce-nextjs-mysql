@@ -1,17 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import ProductFilters from "./product-filters"
-import Card from "@/components/Card"
+import { useState } from "react";
+import ProductFilters from "./product-filters";
+import Card from "@/components/Card";
+import LoadingLogo from "@/components/LoaderSpinner";
 
-export default function ListItems() {
-  const [filteredProducts, setFilteredProducts] = useState([])
-  const [viewMode, setViewMode] = useState("grid")
+export default function ListItems({ items }) {
+  const [filteredProducts, setFilteredProducts] = useState(items);
+  if (!filteredProducts) {
+    return <LoadingLogo />;
+  }
+
+  const [viewMode, setViewMode] = useState("grid");
 
   // Format price with euro symbol
   const formatPrice = (price) => {
-    return `${price.toFixed(2).replace(".", ",")}€`
-  }
+    return `${price.toFixed(2).replace(".", ",")}€`;
+  };
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 py-8">
@@ -24,13 +29,19 @@ export default function ListItems() {
       {filteredProducts.length === 0 ? (
         <div className="text-center py-16">
           <h2 className="text-2xl font-bold mb-4">No products found</h2>
-          <p className="text-gray-600 mb-8">Try adjusting your filters to find what you're looking for.</p>
+          <p className="text-gray-600 mb-8">
+            Try adjusting your filters to find what you're looking for.
+          </p>
         </div>
       ) : (
         <div
-          className={`grid ${viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" : "grid-cols-1"} gap-6`}
+          className={`grid ${
+            viewMode === "grid"
+              ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              : "grid-cols-1"
+          } gap-6`}
         >
-          {filteredProducts.map((product) => (
+          {items.map((product) => (
             // <div key={product.id} className={`border border-gray-200 p-4 ${viewMode === "list" ? "flex gap-6" : ""}`}>
             //   <div className={`${viewMode === "list" ? "w-1/3" : "w-full"} aspect-[3/4] bg-gray-100 mb-4 relative`}>
             //     {/* Placeholder for product image */}
@@ -63,10 +74,10 @@ export default function ListItems() {
             //     </div>
             //   </div>
             // </div>
-            <Card item={product } key={product.name} />
+            <Card item={product} key={product.name} />
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }
