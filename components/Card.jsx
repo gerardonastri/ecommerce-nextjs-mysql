@@ -7,7 +7,7 @@ const Card = ({ item }) => {
     <Link href={`/product/${item.id}`} className="w-full">
       <div className="relative w-full h-[350px]">
         <Image
-          src={item.image_url}
+          src={item.image_url || item.img}
           alt="trend img"
           fill
           className=" object-cover z-10"

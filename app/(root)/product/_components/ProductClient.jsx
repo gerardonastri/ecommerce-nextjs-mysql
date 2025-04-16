@@ -22,6 +22,15 @@ export default function ProductClient({
   const addToCart = useStore((state) => state.addToCart);
   const addToWishlist = useStore((state) => state.addToWishlist);
 
+  const handleAddToCart = () => {
+    
+    addToCart({
+      ...product,
+      color: selectedColor,
+      size: selectedSize,
+    })
+  }
+
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState(colorOptions[0].id);
   const [selectedSize, setSelectedSize] = useState(sizeOptions[0]);
@@ -170,14 +179,8 @@ export default function ProductClient({
           {/* Actions */}
           <div className="flex gap-4 mb-4">
             <button
-              onClick={() =>
-                addToCart({
-                  id: product.id,
-                  color: selectedColor,
-                  size: selectedSize,
-                })
-              }
-              className="flex-1 bg-black text-white py-3 font-medium hover:bg-gray-800 transition-colors"
+              onClick={handleAddToCart}
+              className="flex-1 bg-black text-white py-3 font-medium hover:bg-gray-800 transition-colors !cursor-pointer"
             >
               Add To Cart
             </button>
