@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,8 +10,60 @@ import {
   ChevronRight,
   Star,
   StarHalf,
+  ShoppingBag,
+  X,
+  Check,
 } from "lucide-react";
 import { useStore } from "@/utils/zustand/useStore";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Toast component
+const Toast = ({ isVisible, message, type = "success", onClose }) => {
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, onClose]);
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, y: -20, x: "-50%" }}
+          animate={{ opacity: 1, y: 0, x: "-50%" }}
+          exit={{ opacity: 0, y: -20, x: "-50%" }}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          className="fixed top-6 left-1/2 z-50 transform -translate-x-1/2 flex items-center gap-2 px-4 py-3 rounded-lg shadow-lg"
+          style={{
+            backgroundColor: type === "success" ? "#10B981" : "#EF4444",
+            color: "white",
+            maxWidth: "calc(100% - 32px)",
+          }}
+        >
+          <div className="flex items-center gap-2">
+            {type === "success" ? (
+              <Check size={18} className="text-white" />
+            ) : (
+              <X size={18} className="text-white" />
+            )}
+            <p className="text-sm font-medium">{message}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="ml-4 p-1 rounded-full hover:bg-white/20 transition-colors"
+            aria-label="Close notification"
+          >
+            <X size={16} className="text-white" />
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 export default function ProductClient({
   product,
@@ -22,14 +74,41 @@ export default function ProductClient({
   const addToCart = useStore((state) => state.addToCart);
   const addToWishlist = useStore((state) => state.addToWishlist);
 
+  // Toast state
+  const [toast, setToast] = useState({
+    visible: false,
+    message: "",
+    type: "success",
+  });
+
+  const showToast = (message, type = "success") => {
+    setToast({ visible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToast((prev) => ({ ...prev, visible: false }));
+  };
+
   const handleAddToCart = () => {
-    
     addToCart({
       ...product,
       color: selectedColor,
       size: selectedSize,
-    })
-  }
+    });
+
+    // Show toast notification
+    showToast(`${product.name} added to your cart!`, "success");
+  };
+
+  const handleAddToWishlist = () => {
+    addToWishlist({
+      ...product,
+      color: selectedColor,
+      size: selectedSize,
+    });
+
+    showToast(`${product.name} added to your wishlist!`, "success");
+  };
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState(colorOptions[0].id);
@@ -51,12 +130,20 @@ export default function ProductClient({
 
   return (
     <>
+      {/* Toast notification */}
+      <Toast
+        isVisible={toast.visible}
+        message={toast.message}
+        type={toast.type}
+        onClose={hideToast}
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Galleria Immagini */}
         <div>
           <div className="relative aspect-[3/4] mb-4">
             <Image
-              src={productImages[selectedImage]}
+              src={productImages[selectedImage] || "/placeholder.svg"}
               alt={product.name}
               fill
               className="object-cover"
@@ -74,10 +161,13 @@ export default function ProductClient({
             >
               <ChevronRight size={20} />
             </button>
-            <button className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-sm">
+            <button className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-sm cursor-pointer">
               <Share2 size={18} />
             </button>
-            <button className="absolute top-16 right-4 bg-white rounded-full p-2 shadow-sm">
+            <button
+              onClick={handleAddToWishlist}
+              className="absolute top-16 right-4 bg-white rounded-full p-2 shadow-sm cursor-pointer"
+            >
               <Heart size={18} />
             </button>
           </div>
@@ -94,7 +184,7 @@ export default function ProductClient({
                 }`}
               >
                 <Image
-                  src={img}
+                  src={img || "/placeholder.svg"}
                   alt={`Image ${index + 1}`}
                   fill
                   className="object-cover"
@@ -178,15 +268,20 @@ export default function ProductClient({
 
           {/* Actions */}
           <div className="flex gap-4 mb-4">
-            <button
+            <motion.button
               onClick={handleAddToCart}
-              className="flex-1 bg-black text-white py-3 font-medium hover:bg-gray-800 transition-colors !cursor-pointer"
+              className="flex-1 bg-black text-white py-3 font-medium hover:bg-gray-800 transition-colors cursor-pointer flex items-center justify-center gap-2"
+              whileTap={{ scale: 0.95 }}
             >
+              <ShoppingBag size={18} />
               Add To Cart
-            </button>
-            <button className="flex-1 border border-gray-300 py-3 font-medium hover:bg-gray-50 transition-colors">
+            </motion.button>
+            <motion.button
+              className="flex-1 border border-gray-300 py-3 font-medium hover:bg-gray-50 transition-colors"
+              whileTap={{ scale: 0.95 }}
+            >
               Checkout Now
-            </button>
+            </motion.button>
           </div>
 
           <p className="text-sm text-gray-600">

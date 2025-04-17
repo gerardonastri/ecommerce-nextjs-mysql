@@ -1,55 +1,56 @@
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 
-import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Heart, User, ShoppingBag, Menu, X } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { Heart, User, ShoppingBag, Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+// import { useStore } from "@/utils/zustand/useStore";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // Check if we're on mobile based on window width
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
+      setIsMobile(window.innerWidth < 768);
+    };
 
     // Initial check
-    checkMobile()
+    checkMobile();
 
     // Add event listener for window resize
-    window.addEventListener("resize", checkMobile)
+    window.addEventListener("resize", checkMobile);
 
     // Cleanup
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Close mobile menu when switching to desktop
   useEffect(() => {
     if (!isMobile) {
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  }, [isMobile])
+  }, [isMobile]);
 
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = "unset"
-    }
-  }, [isOpen])
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   const navLinks = [
     { href: "/cat/men", label: "Men" },
@@ -57,13 +58,19 @@ const Navbar = () => {
     { href: "/cat/kids", label: "Kids" },
     { href: "/sale", label: "Sale" },
     { href: "/collections", label: "Collections" },
-  ]
+  ];
 
   const iconLinks = [
-    { icon: <Heart className="h-5 w-5" />, href: "/wishlist", label: "Wishlist" },
+    {
+      icon: <Heart className="h-5 w-5" />,
+      href: "/wishlist",
+      label: "Wishlist",
+    },
     { icon: <User className="h-5 w-5" />, href: "/account", label: "Account" },
     { icon: <ShoppingBag className="h-5 w-5" />, href: "/cart", label: "Cart" },
-  ]
+  ];
+
+  // const cart = useStore((state) => state.cart);
 
   return (
     <nav className="px-6 md:px-10 lg:px-20 flex items-center justify-between pt-6 md:pt-10 relative">
@@ -103,7 +110,9 @@ const Navbar = () => {
       <Link
         href="/"
         title="logo"
-        className={` text-2xl md:text-4xl font-playfair ${isMobile && !isOpen ? "mx-auto" : ""}`}
+        className={` text-2xl md:text-4xl font-playfair ${
+          isMobile && !isOpen ? "mx-auto" : ""
+        }`}
       >
         JerCommerce
       </Link>
@@ -116,7 +125,10 @@ const Navbar = () => {
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Link href={link.href} className="text-sm lg:text-base hover:font-medium transition-all">
+            <Link
+              href={link.href}
+              className="text-sm lg:text-base hover:font-medium transition-all"
+            >
               {link.label}
             </Link>
           </motion.div>
@@ -126,7 +138,11 @@ const Navbar = () => {
       {/* Desktop Icons */}
       <div className="hidden md:flex items-center gap-5 lg:gap-7">
         {iconLinks.map((item, index) => (
-          <motion.div key={index} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+          <motion.div
+            key={index}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
             <Link href={item.href} aria-label={item.label}>
               {item.icon}
             </Link>
@@ -153,7 +169,11 @@ const Navbar = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + index * 0.1 }}
                 >
-                  <Link href={link.href} className="text-xl font-medium" onClick={() => setIsOpen(false)}>
+                  <Link
+                    href={link.href}
+                    className="text-xl font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
                     {link.label}
                   </Link>
                 </motion.div>
@@ -187,8 +207,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
-
+export default Navbar;
