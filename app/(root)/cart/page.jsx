@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trash2, Plus, Minus, ShoppingBag, X, Check } from "lucide-react";
 import { useStore } from "@/utils/zustand/useStore";
+import CheckoutButton from "@/components/CheckoutButton";
 
 // Toast component
 const Toast = ({ isVisible, message, type = "success", onClose }) => {
@@ -279,14 +280,7 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <motion.button
-                className="w-full py-3 bg-white border border-black text-black font-medium hover:bg-black hover:text-white transition-colors duration-300"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                disabled={cart.length === 0}
-              >
-                Check Out
-              </motion.button>
+              <CheckoutButton />
 
               {cart.length > 0 && (
                 <Link href="/products">

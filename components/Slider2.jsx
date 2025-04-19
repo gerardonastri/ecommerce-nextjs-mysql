@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { ArrowRight, ArrowLeft } from "lucide-react"
-
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 const slides = [
   {
@@ -27,34 +27,34 @@ const slides = [
     description:
       "Ethically crafted garments that respect both tradition and innovation. Designed to last beyond seasons with enduring appeal.",
   },
-]
+];
 
 export default function BeachSlider() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1))
-  }
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1))
-  }
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
 
   // Pause auto-play on hover
-  const handleMouseEnter = () => setIsAutoPlaying(false)
-  const handleMouseLeave = () => setIsAutoPlaying(true)
+  const handleMouseEnter = () => setIsAutoPlaying(false);
+  const handleMouseLeave = () => setIsAutoPlaying(true);
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying) return
+    if (!isAutoPlaying) return;
 
     const interval = setInterval(() => {
-      nextSlide()
-    }, 5000)
+      nextSlide();
+    }, 5000);
 
-    return () => clearInterval(interval)
-  }, [currentSlide, isAutoPlaying])
+    return () => clearInterval(interval);
+  }, [currentSlide, isAutoPlaying]);
 
   return (
     <div
@@ -133,12 +133,12 @@ export default function BeachSlider() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Explore the Collections
+                <Link href="/products">Explore the Collections</Link>
               </motion.button>
             </motion.div>
           </div>
         </motion.div>
       </AnimatePresence>
     </div>
-  )
+  );
 }
