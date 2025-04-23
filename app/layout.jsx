@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { SessionProvider } from "next-auth/react";
+import CookieBanner from "@/components/CookieBanner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${playfair.variable} ${inter.variable} antialiased`}>
         <Navbar />
+        <CookieBanner />
         {children}
         <Footer />
       </body>

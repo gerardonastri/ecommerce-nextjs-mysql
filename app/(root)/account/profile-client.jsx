@@ -979,7 +979,7 @@ export default function ProfileClient({ user }) {
   const handleLogout = async () => {
     try {
       await signOut({ redirect: false });
-      router.push("/login");
+      router.push("/auth");
     } catch (error) {
       console.error("Error logging out:", error);
       showToast("Errore durante il logout", "error");
