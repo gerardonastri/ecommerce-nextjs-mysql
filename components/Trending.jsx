@@ -2,30 +2,22 @@ import Image from "next/image";
 import React from "react";
 import Card from "./Card";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
 
-const Trending = () => {
-  const items = [
-    {
-      title: "T-shirt Oversize Bianca",
-      price: "19.99€",
-      img: "/trending/img-1.webp",
-    },
-    {
-      title: "Jeans Slim Fit Blu",
-      price: "39.99€",
-      img: "/trending/img-2.jpeg",
-    },
-    {
-      title: "Giacca in Denim",
-      price: "59.99€",
-      img: "/trending/img-3.jpeg",
-    },
-    {
-      title: "Felpa con Cappuccio Nera",
-      price: "29.99€",
-      img: "/trending/img-4.jpeg",
-    },
-  ];
+const Trending = async () => {
+  const cookieStore = await cookies();
+  const supabase = createClient(cookieStore);
+
+  const { data, error } = await supabase
+    .from("products")
+    .select("*") // adatta questi campi
+    .order("created_at", { ascending: false })
+    .limit(4);
+
+  if (error) {
+    console.error("Errore Supabase:", error.message);
+  }
 
   return (
     <section className="wrapper !my-[100px] relative">
@@ -33,7 +25,7 @@ const Trending = () => {
         Trending now
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
-        {items.map((item, i) => (
+        {data?.map((item, i) => (
           <Card item={item} key={i} />
         ))}
       </div>

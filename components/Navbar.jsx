@@ -73,7 +73,7 @@ const Navbar = () => {
   // const cart = useStore((state) => state.cart);
 
   return (
-    <nav className="px-6 md:px-10 lg:px-20 flex items-center justify-between pt-6 md:pt-10 relative">
+    <nav className="px-6 md:px-10 lg:px-20 xl:px-0 xl:max-w-[1400px] xl:mx-auto flex items-center justify-between pt-6 md:pt-10 relative">
       {/* Mobile Menu Button */}
       <motion.button
         className="md:hidden z-50"
